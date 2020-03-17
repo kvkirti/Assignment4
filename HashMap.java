@@ -11,23 +11,24 @@ public class HashMap<V> implements HashMapInterface<V> {
 			this.key=key;
 			this.value=value;
 		}
+	}
 
 	public HashNode[] hashTable;
 	int occupied;
-	HashNode deleted;
+	// HashNode deleted;
 
 	public HashMap(int size) {
 		hashTable = new HashNode[size];
 		this.size = size;
 		occupied = 0;
-		deleted = new HashNode("deleted", -1);
+		// deleted = new HashNode("deleted", -1);
 	}
 
 	public V put(String key, V value){
 		int index = 0;
 		if(search(key)==-1){
 			index = hashFunction(key);
-			while(hashTable[index]!=null && hashTable[index] != deleted){
+			while(hashTable[index]!=null){
 				index = (index+1) % hashTable.length;
 			}
 			hashTable[index] = new HashTable(key,value);
@@ -43,9 +44,9 @@ public class HashMap<V> implements HashMapInterface<V> {
 	}
 
 	public int hashFunction(String key){
-		int sum =key.charAt(key.length()-1);
+		int sum =(int) key.charAt(key.length()-1);
 		for(int i=key.length()-2;i>=0;i--){
-			sum = (key.charAt(i) + 41*sum) % this.size;
+			sum = (((int) key.charAt(i)) + (41*sum)%this.size) % this.size;
 		}
 		return (sum % this.size);
 	}
@@ -73,23 +74,27 @@ public class HashMap<V> implements HashMapInterface<V> {
 	}
 
 	public boolean remove(String key){
-		// write your code here
+
 		return false;
 	}
 
 	public boolean contains(String key){
-		index = hashFunction(key);
-		while(hashTable[index]!=null){
-			if(hashTable[index].key.equals(key)){
-				return true;
-			}
-			index = (index+1) % hashTable.length;
+		if (key == null || key.length() < 1){
+			return false;
+		}
+		if(search(key)!=-1){
+			return true;
 		}
 		return false;
 	}
 
 	public Vector<String> keySet(){
-		// write your code here
-		return null;
+		Vector<String> ans = new Vector<String>();
+		for(int i=0;i<size;i++){
+			if(hashTable[i]!=null){
+				ans.add(hashTable[i].key);
+			}
+		}
+		return ans;
 	}
 }
