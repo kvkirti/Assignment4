@@ -51,10 +51,24 @@ public class HashMap<V> implements HashMapInterface<V> {
 	}
 
 	public int search(String key){
-
+		index = hashFunction(key);
+		while(hashTable[index]!=null){
+			if(hashTable[index].key.equals(key)){
+				return (index);
+			}
+			index = (index+1) % hashTable.length;
+		}
+		return -1;
 	}
+
 	public V get(String key){
-		// write your code here
+		index = hashFunction(key);
+		while(hashTable[index]!=null){
+			if(hashTable[index].key.equals(key)){
+				return (hashTable[index].value);
+			}
+			index = (index+1) % hashTable.length;
+		}
 		return null;
 	}
 
