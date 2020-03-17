@@ -43,9 +43,9 @@ public class HashMap<V> implements HashMapInterface<V> {
 	}
 
 	public int hashFunction(String key){
-		int sum =key[key.length()-1];
+		int sum =key.charAt(key.length()-1);
 		for(int i=key.length()-2;i>=0;i--){
-			sum = (key[i] + 41*sum) % this.size;
+			sum = (key.charAt(i) + 41*sum) % this.size;
 		}
 		return (sum % this.size);
 	}
@@ -78,7 +78,13 @@ public class HashMap<V> implements HashMapInterface<V> {
 	}
 
 	public boolean contains(String key){
-		// write your code here
+		index = hashFunction(key);
+		while(hashTable[index]!=null){
+			if(hashTable[index].key.equals(key)){
+				return true;
+			}
+			index = (index+1) % hashTable.length;
+		}
 		return false;
 	}
 
