@@ -11,6 +11,7 @@ public class HashMap<V> implements HashMapInterface<V> {
 			this.key=key;
 			this.value=value;
 		}
+	}
 
 	public HashNode[] hashTable;
 	int occupied;
@@ -43,9 +44,9 @@ public class HashMap<V> implements HashMapInterface<V> {
 	}
 
 	public int hashFunction(String key){
-		int sum =key[key.length()-1];
+		int sum =(int) key.charAt(key.length()-1);
 		for(int i=key.length()-2;i>=0;i--){
-			sum = (key[i] + 41*sum) % this.size;
+			sum += (key.charAt(i) + (41*sum)%this.size) % this.size;
 		}
 		return (sum % this.size);
 	}
