@@ -1,4 +1,4 @@
-package col106.assignment4.HashMap;
+// package col106.assignment4.HashMap;
 import java.util.Vector;
 
 public class HashMap<V> implements HashMapInterface<V> {
@@ -14,45 +14,43 @@ public class HashMap<V> implements HashMapInterface<V> {
 	}
 
 	public HashNode[] hashTable;
-	int occupied;
-	HashNode deleted;
+	int occupied,size;
 
 	public HashMap(int size) {
-		hashTable = new HashNode[size];
+		hashTable = (HashNode[]) new Object[size];
 		this.size = size;
 		occupied = 0;
-		deleted = new HashNode("deleted", -1);
 	}
 
 	public V put(String key, V value){
 		int index = 0;
 		if(search(key)==-1){
 			index = hashFunction(key);
-			while(hashTable[index]!=null && hashTable[index] != deleted){
+			while(hashTable[index]!=null){
 				index = (index+1) % hashTable.length;
 			}
-			hashTable[index] = new HashTable(key,value);
-			occupied++;
+			hashTable[index] = new HashNode(key,value);
+			this.occupied++;
 		}
 		else{
 			V oldValue = hashTable[search(key)].value;
 			hashTable[search(key)].value = value;
-			return oldvalue;
+			return oldValue;
 		}
 		// write your code here
 		return null;
 	}
 
 	public int hashFunction(String key){
-		int sum =(int) key.charAt(key.length()-1);
+		int coeff=1,offset=61,sum =(int) key.charAt(key.length()-1);
 		for(int i=key.length()-2;i>=0;i--){
-			sum += (key.charAt(i) + (41*sum)%this.size) % this.size;
+			sum = (((int)key.charAt(i) -offset) + (coeff*sum)%this.size) % this.size;
 		}
 		return (sum % this.size);
 	}
 
 	public int search(String key){
-		index = hashFunction(key);
+		int index = hashFunction(key);
 		while(hashTable[index]!=null){
 			if(hashTable[index].key.equals(key)){
 				return (index);
@@ -63,7 +61,7 @@ public class HashMap<V> implements HashMapInterface<V> {
 	}
 
 	public V get(String key){
-		index = hashFunction(key);
+		int index = hashFunction(key);
 		while(hashTable[index]!=null){
 			if(hashTable[index].key.equals(key)){
 				return (hashTable[index].value);
@@ -74,8 +72,37 @@ public class HashMap<V> implements HashMapInterface<V> {
 	}
 
 	public boolean remove(String key){
-		// write your code here
-		return false;
+		int index = hashFunction(key);
+		if(hashTable[index]==null)	return false;
+		while(hashTable[index]!=null){
+			if(hashTable[index].key.equals(key)){
+				hashTable[index]=null;
+				int forward=index,backward=index,Max_iter=0;
+				// ------------------------- Shifting --------------------------------------
+				while(Max_iter<=this.size){
+					if(hashTable[forward]==null)						break;
+					if(hashFunction(hashTable[forward].key)<=hashFunction(key)){
+						hashTable[backward]=hashTable[forward];
+						backward=forward;
+					}
+					forward=(forward+1)%this.size;
+					Max_iter++;
+				}
+				//---------------------------------------------------------------------------
+			}
+			index = (index+1) % hashTable.length;
+		}
+		this.occupied--;
+		return true;
+	}
+
+	public void print_Hashmap(){
+		System.out.println("\n-------------------- PRINTING HASHMAP---------------------------------------------------------");
+		System.out.print("Index\tValue\tHash");
+		for(int i=0;i<this.size;i++){
+			System.out.println(i+" --> "+hashTable[i]+" --> "+ hashFunction(hashTable[i].key));
+		}
+		System.out.println("---------------------------------------------------------------------------------------------\n");
 	}
 
 	public boolean contains(String key){
