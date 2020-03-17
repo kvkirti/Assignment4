@@ -88,11 +88,14 @@ public class HashMap<V> implements HashMapInterface<V> {
 			}
 			hashTable.set(index,null);
 			index = (index+1) % this.size;
+			// System.out.println(index);
 			while(hashTable.get(index)!=null){
+				
 				String newKey = hashTable.get(index).key;
 				V newValue = hashTable.get(index).value;
 				hashTable.set(index,null);
 				V value = put(newKey,newValue);
+				index = (index+1) % this.size;
 			}
 			return true;
 		}
