@@ -3,14 +3,24 @@ import java.util.Vector;
 
 public class HashMap<V> implements HashMapInterface<V> {
 
-	public Array<V> hashTable;
+	public class HashNode{
+		private String key;
+		private V value;
+
+		public HashNode(String key, V value){
+			this.key=key;
+			this.value=value;
+		}
+
+	public HashNode[] hashTable;
 	int occupied;
-	V deleted;
+	HashNode deleted;
 
 	public HashMap(int size) {
-		hashTable = new Array<V>(size);
+		hashTable = new HashNode[size];
 		this.size = size;
 		occupied = 0;
+		deleted = new HashNode("deleted", -1);
 	}
 
 	public V put(String key, V value){
@@ -20,12 +30,12 @@ public class HashMap<V> implements HashMapInterface<V> {
 			while(hashTable[index]!=null && hashTable[index] != deleted){
 				index = (index+1) % hashTable.length;
 			}
-			hashTable[index] = value;
+			hashTable[index] = new HashTable(key,value);
 			occupied++;
 		}
 		else{
-			V oldValue = hashTable[search(key)];
-			hashTable[search(key)] = value;
+			V oldValue = hashTable[search(key)].value;
+			hashTable[search(key)].value = value;
 			return oldvalue;
 		}
 		// write your code here
@@ -33,7 +43,11 @@ public class HashMap<V> implements HashMapInterface<V> {
 	}
 
 	public int hashFunction(String key){
-
+		int sum =key[key.length()-1];
+		for(int i=key.length()-2;i>=0;i--){
+			sum = (key[i] + 41*sum) % this.size;
+		}
+		return (sum % this.size);
 	}
 
 	public int search(String key){
