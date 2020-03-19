@@ -1,4 +1,4 @@
-// package col106.assignment4.HashMap;
+package col106.assignment4.HashMap;
 import java.util.Vector;
 
 /**
@@ -32,5 +32,5 @@ public interface HashMapInterface<V> {//Here key will always be of type String
     /**
      * @return Return the set of keys stored in the HashMap, in the order they are stored in the underlying ArrayList 
      */
-    public Vector<String> keySet();
+    public Vector<String> getKeysInOrder();
 }

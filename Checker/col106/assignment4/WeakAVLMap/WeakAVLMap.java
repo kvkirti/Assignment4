@@ -1,4 +1,4 @@
-// package col106.assignment4.WeakAVLMap;
+package col106.assignment4.WeakAVLMap;
 import java.util.Vector;
 import java.util.Queue;
 import java.util.LinkedList;
@@ -113,10 +113,15 @@ public class WeakAVLMap<K extends Comparable,V> implements WeakAVLMapInterface<K
 				s=p.left;
 			}
 			if(p.rank-s.rank==1){
-				p.rank++;
-				q=p;
-				p=q.parent;
-				if(q==this.root){
+				if(p.rank-q.rank==0){
+					p.rank++;
+					q=p;
+					p=q.parent;
+					if(q==this.root){
+						break;
+					}
+				}
+				else{
 					break;
 				}
 			}
@@ -237,11 +242,12 @@ public class WeakAVLMap<K extends Comparable,V> implements WeakAVLMapInterface<K
 	public void delete(Node root, Node v){
 		if(v.left!=null && v.right!=null){
 			Node suc = successor(v);
+			// System.out.println(v.key);
 			v.key=suc.key;
 			v.value=suc.value;
 			v = suc;
 		}
-
+		
 		Node q=null;
 		if(v.right!=null){
 			q=v.right;
@@ -272,6 +278,7 @@ public class WeakAVLMap<K extends Comparable,V> implements WeakAVLMapInterface<K
 			v.parent=null;
 
 			rebalanceDelete(this.root, q);
+
 		}
 		else if(q==null){
 			// System.out.println("sahi aaya");
@@ -285,6 +292,10 @@ public class WeakAVLMap<K extends Comparable,V> implements WeakAVLMapInterface<K
 			v.rank--;
 			// System.out.println(p.key);
 			v.parent=null;
+			if(TwoTwoNode(p)){
+				p.rank--;
+			}
+			// printRank(p.key);
 			rebalanceDelete(this.root, p);
 		}
 	}
@@ -293,8 +304,9 @@ public class WeakAVLMap<K extends Comparable,V> implements WeakAVLMapInterface<K
 		if(node==null || node.rank==0){
 			return false;
 		}
-		if(node.rank==1){
+		if(node.rank==2){
 			if(node.left == null && node.right == null){
+				
 				return true;
 			}
 			else{
@@ -302,6 +314,7 @@ public class WeakAVLMap<K extends Comparable,V> implements WeakAVLMapInterface<K
 			}
 		}
 		else{
+			// System.out.println("ye true");
 			return(node.left.rank == node.right.rank && node.left.rank+2==node.rank);
 		}
 	}
@@ -324,8 +337,10 @@ public class WeakAVLMap<K extends Comparable,V> implements WeakAVLMapInterface<K
 		else if(q==p.left){
 			s = p.right;
 		}
+		// System.out.println(s.key);
+		// System.out.println(q.key);
 		// int rankDiff = p.rank- q.rank;
-		while(p.rank-q.rank==3 || p.rank==1 && TwoTwoNode(p)){
+		while(p.rank-q.rank==3 || TwoTwoNode(p)){
 			if(s==null){
 				s.rank = 0;
 			}
@@ -333,6 +348,9 @@ public class WeakAVLMap<K extends Comparable,V> implements WeakAVLMapInterface<K
 				p.rank--;
 				q=p;
 				p=q.parent;
+				if(q==this.root){
+					break;
+				}
 				if(p.left==q){
 					s=p.right;
 				}
@@ -346,6 +364,9 @@ public class WeakAVLMap<K extends Comparable,V> implements WeakAVLMapInterface<K
 					s.rank--;
 					q=p;
 					p=q.parent;
+					if(q==this.root){
+						break;
+					}
 					if(p.left==q){
 					s=p.right;
 					}

@@ -1,4 +1,4 @@
-// package col106.assignment4.HashMap;
+package col106.assignment4.HashMap;
 import java.util.Vector;
 import java.util.ArrayList;
 
@@ -18,7 +18,7 @@ public class HashMap<V> implements HashMapInterface<V> {
 	int occupied,size;
 
 	public HashMap(int size){
-		hashTable = new ArrayList<HashNode>(size);
+		hashTable = new ArrayList<HashNode>();
 		for(int i=0;i<size;i++){
 			hashTable.add(null);
 		}
@@ -33,7 +33,7 @@ public class HashMap<V> implements HashMapInterface<V> {
 			while(hashTable.get(index)!=null){
 				index = (index+1) % this.size;
 			}
-			hashTable.add(index, new HashNode(key,value));
+			hashTable.set(index, new HashNode(key,value));
 		}
 		else{
 			V oldValue = hashTable.get(search(key)).value;
@@ -68,6 +68,7 @@ public class HashMap<V> implements HashMapInterface<V> {
 
 	public V get(String key){
 		int index = hashFunction(key);
+		// System.out.println(index);
 		while(hashTable.get(index)!=null){
 			if(hashTable.get(index).key.equals(key)){
 				return ((hashTable.get(index)).value);
@@ -149,7 +150,7 @@ public class HashMap<V> implements HashMapInterface<V> {
 		return false;
 	}
 
-	public Vector<String> keySet(){
+	public Vector<String> getKeysInOrder(){
 		Vector<String> ans = new Vector<String>();
 		for(int i=0;i<size;i++){
 			if(hashTable.get(i)!=null){
