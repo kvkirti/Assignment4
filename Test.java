@@ -1,3 +1,4 @@
+import java.util.Vector;
 public class Test { 
     public static void main(String[] args) 
     {
@@ -11,6 +12,10 @@ public class Test {
 		Myhash.print_Hashmap();
 		Myhash.remove("pqr");
 
-		Myhash.print_Hashmap();
+		Vector v = Myhash.keySet();
+		for(int i=0;i<v.size();i++){
+			System.out.println(v.get(i));
+		}
+		System.out.println(Myhash.contains("abc"));
   	} 
 } 
