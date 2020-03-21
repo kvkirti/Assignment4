@@ -2,9 +2,13 @@
 import java.io.File;
 // import java.io.*;
 // import java.util.*;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+import java.io.IOException;
 
 public class Map<V> { 
 	WeakAVLMap wAvl;
@@ -12,7 +16,7 @@ public class Map<V> {
 
 	public Map() {
 		this.wAvl=new WeakAVLMap();
-		this.hashmap=new HashMap(1000000);
+		this.hashmap=new HashMap<V>(1000000);
 	}
 	public void eval(String inputFileName, String outputFileName) throws IOException {
 		try {
@@ -22,9 +26,9 @@ public class Map<V> {
 				String raw_line=scanner.nextLine();
 				String[] input=raw_line.split(" ",0);
 
-				for(int i=0;i<input.length;i++){
-					System.out.print(input[i]+" ");
-				}
+				// for(int i=0;i<input.length;i++){
+				// 	System.out.print(input[i]+" ");
+				// }
 
 				System.out.println();
 				if(input.length==3){
@@ -55,12 +59,13 @@ public class Map<V> {
 				}
 			}
 			File fout = new File(outputFileName);
-			FileOutputStream fos = new FileOutputStream(fout);
-			OutputStreamWriter osw = new OutputStreamWriter(fos);
-			osw.write("Operations\t WAVL\t HashMap\n");
-			osw.write("Insertions\t "+Long.toString(tWavl_Insert)+"\t "+Long.toString(tHash_Insert)+"\n");
-			osw.write("Deletions\t "+Long.toString(tWavl_Delete)+"\t "+Long.toString(tHash_Delete)+"\n");
-			osw.close();
+			// FileOutputStream fos = new FileOutputStream(fout);
+			BufferedWriter bw = new BufferedWriter(new FileWriter(fout));
+			// OutputStreamWriter osw = new OutputStreamWriter(fos);
+			bw.write("Operations\t WAVL\t HashMap\n");
+			bw.write("Insertions\t "+Long.toString(tWavl_Insert)+"\t "+Long.toString(tHash_Insert)+"\n");
+			bw.write("Deletions\t "+Long.toString(tWavl_Delete)+"\t "+Long.toString(tHash_Delete)+"\n");
+			bw.close();
 			scanner.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
