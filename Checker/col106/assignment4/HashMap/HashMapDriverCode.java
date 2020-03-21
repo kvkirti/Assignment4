@@ -59,7 +59,7 @@ public class HashMapDriverCode{
 						break;
 					case "KEY_SET":
 						System.out.print("Key Set: ");
-						Vector<String> keys = map.keySet();
+						Vector<String> keys = map.getKeysInOrder();
 						for(String i : keys){
 							System.out.print(i + " ");
 						}

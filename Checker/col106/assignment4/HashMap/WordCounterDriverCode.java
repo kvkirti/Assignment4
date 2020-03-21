@@ -12,6 +12,7 @@ public class WordCounterDriverCode{
         out = new PrintStream(new FileOutputStream(args[1], false), true);
         System.setOut(out);
 		file = new File(args[0]);
+		// file = new File("input/WordCounter_INP2");
 
 		WordCounter wc = new WordCounter();
 

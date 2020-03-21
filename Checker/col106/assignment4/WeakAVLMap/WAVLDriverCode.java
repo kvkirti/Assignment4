@@ -14,6 +14,7 @@ public class WAVLDriverCode{
 		out = new PrintStream(new FileOutputStream(args[1], false), true);
 		System.setOut(out);
 		file = new File(args[0]);
+		// file = new File("testcase/WAVL_INP4");
 
 		BufferedReader br = null;
 		try {
